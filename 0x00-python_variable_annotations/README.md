@@ -12,3 +12,4 @@
 - **9-element_length.py**: Holds a function that returns a List of Tuples of sequences and thier length.
 - **100-safe_first_element.py**: Holds a duck-typed annotated function that returns the value of its argument first element.
 - **101-safely_get_value.py**: Using generic annotation.
+- **102-type_checking.py**: Holds a function that takes a Tuple and an int, and returns a List.
