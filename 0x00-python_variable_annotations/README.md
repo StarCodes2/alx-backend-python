@@ -5,3 +5,4 @@
 - **2-floor.py**: Holds a type-annotated function floor which takes a float n as argument and returns the floor of the float.
 - **3-to_str.py**: Holds  a type-annotated function to_str that takes a float n as argument and returns the string representation of the float.
 - **4-define_variables.py**: Holds the definition and annotation of multiple variables.
+- **5-sum_list.py**: Holds a type-annotated function sum_list which takes a list input_list of floats as argument and returns their sum as a float.
