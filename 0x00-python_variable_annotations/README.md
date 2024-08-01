@@ -7,3 +7,4 @@
 - **4-define_variables.py**: Holds the definition and annotation of multiple variables.
 - **5-sum_list.py**: Holds a type-annotated function sum_list which takes a list input_list of floats as argument and returns their sum as a float.
 - **6-sum_mixed_list.py**: Holds a type-annotated function sum_mixed_list which takes a list mxd_lst of integers and floats and returns their sum as a float.
+- **7-to_kv.py**: Holds a type-annotated function to_kv that takes a string k and an int OR float v as arguments and returns a tuple.
