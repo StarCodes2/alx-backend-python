@@ -10,3 +10,4 @@
 - **7-to_kv.py**: Holds a type-annotated function to_kv that takes a string k and an int OR float v as arguments and returns a tuple.
 - **8-make_multiplier.py**: Holds a type-annotated function make_multiplier that takes a float multiplier as argument and returns a function that multiplies a float by multiplier.
 - **9-element_length.py**: Holds a function that returns a List of Tuples of sequences and thier length.
+- **100-safe_first_element.py**: Holds a duck-typed annotated function that returns the value of its argument first element.
