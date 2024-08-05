@@ -12,8 +12,6 @@ wait_random = __import__('0-basic_async_syntax').wait_random
 
 async def wait_n(n: int, max_delay: int) -> List:
     """ Returns a list of the delay for each spawn. """
-    if n < 1:
-        return []
     delays = await asyncio.gather(*(wait_random(max_delay) for i in range(n)))
     sorted_delays = []
 
