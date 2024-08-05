@@ -13,7 +13,7 @@ async def wait_random(max_delay: int = 10) -> float:
     if max_delay < 1:
         delay: int = 0
     else:
-        delay: int = random.randint(0, max_delay)
+        delay: int = random.uniform(0, max_delay)
     now: float = time.perf_counter()
     await asyncio.sleep(delay)
 
