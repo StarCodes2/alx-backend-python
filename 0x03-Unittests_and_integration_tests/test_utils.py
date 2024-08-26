@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    Using Mock, Parameterize and patch to yesy functions, methods and classes.
+    Using Mock, Parameterize and patch to test functions, methods and classes.
 """
 import unittest
 from unittest.mock import Mock, patch
