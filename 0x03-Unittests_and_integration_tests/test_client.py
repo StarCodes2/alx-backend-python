@@ -82,10 +82,10 @@ class TestGithubOrgClient(unittest.TestCase):
     TEST_PAYLOAD
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
-    """ """
+    """ Integration tests for the GithubOrgClient.public_repos method. """
     @classmethod
     def setUpClass(cls) -> None:
-        """Set up class-wide mocks before any test in this class runs."""
+        """ Set up class-wide mocks before any test in this class runs. """
         def get_side_effect(url: str) -> MagicMock:
             """ Side effect function for requests.get().json() """
             if url == "https://api.github.com/orgs/google":
