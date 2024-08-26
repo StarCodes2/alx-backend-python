@@ -42,3 +42,24 @@ class TestGithubOrgClient(unittest.TestCase):
             org_mock.return_value = payload
             test_obj = GithubOrgClient(org)
             self.assertEqual(test_obj._public_repos_url, payload["repos_url"])
+
+    @parameterized.expand([
+        ("google", [{"name": "Search Repo"}]),
+        ("abc", [{"name": "abc Repo"}]),
+    ])
+    @patch('client.get_json')
+    def test_public_repos(self, org: str, payload: Dict,
+                          mock_get: Mock) -> None:
+        """ Mocks two properties to test the return value of one. """
+        mock_get.return_value = payload
+        with patch.object(GithubOrgClient, '_public_repos_url',
+                          new_callable=PropertyMock) as repos_mock:
+            url = GithubOrgClient.ORG_URL.format(org=org)
+            repos_mock.return_value = url
+
+            test_obj = GithubOrgClient(org)
+            payload_list = [pay['name'] for pay in payload]
+            self.assertEqual(test_obj.public_repos(), payload_list)
+
+            self.assertEqual(test_obj._public_repos_url, url)
+            mock_get.assert_called_once()
