@@ -62,4 +62,5 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(test_obj.public_repos(), payload_list)
 
             repos_mock.assert_called_once()
-            mock_get.assert_called_once()
+
+        mock_get.assert_called_once()
