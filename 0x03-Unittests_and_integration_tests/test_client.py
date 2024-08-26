@@ -3,7 +3,7 @@
     Using Mock, Parameterize and patch to test functions, methods and classes.
 """
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, PropertyMock, patch
 from client import GithubOrgClient
 from parameterized import parameterized
 from typing import Any, Dict, Mapping, Sequence
@@ -27,3 +27,18 @@ class TestGithubOrgClient(unittest.TestCase):
 
         expected_url = test_obj.ORG_URL.format(org=org)
         mock_get.assert_called_with(expected_url)
+
+    @parameterized.expand([
+        ("google",),
+        ("abc",),
+    ])
+    def test_public_repos_url(self, org: str) -> None:
+        """ Mock a property to test its return value. """
+        with patch.object(GithubOrgClient, 'org',
+                          new_callable=PropertyMock) as org_mock:
+            payload = {
+                "repos_url": GithubOrgClient.ORG_URL.format(org=org)
+            }
+            org_mock.return_value = payload
+            test_obj = GithubOrgClient(org)
+            self.assertEqual(test_obj._public_repos_url, payload["repos_url"])
