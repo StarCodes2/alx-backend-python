@@ -3,9 +3,10 @@
     Using Mock, Parameterize and patch to yesy functions, methods and classes.
 """
 import unittest
-from utils import access_nested_map
+from unittest.mock import Mock, patch
+from utils import access_nested_map, get_json
 from parameterized import parameterized
-from typing import Any, Mapping, Sequence
+from typing import Any, Dict, Mapping, Sequence
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -33,5 +34,21 @@ class TestAccessNestedMap(unittest.TestCase):
 
 
 class TestGetJson(unittest.TestCase):
-    """ """
-    pass
+    """ Tests the get_json funtion """
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False}),
+    ])
+    @patch('utils.requests.get')
+    def test_get_json(self, url: str, payload: Dict,
+                      mock_get: Mock) -> None:
+        """ Test the get_json function without making http call. """
+        # Create a Mock responce object with a json method
+        mock_res = Mock()
+        mock_res.json.return_value = payload
+        # Set the mock get method to return the mock reponse
+        mock_get.return_value = mock_res
+
+        result = get_json(url)
+        mock_get.assert_called_once_with(url)
+        self.assertEqual(result, payload)
