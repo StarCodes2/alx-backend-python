@@ -84,9 +84,9 @@ class TestGithubOrgClient(unittest.TestCase):
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """ """
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         """Set up class-wide mocks before any test in this class runs."""
-        def get_side_effect(url):
+        def get_side_effect(url: str) -> MagicMock:
             """ Side effect function for requests.get().json() """
             if url == "https://api.github.com/orgs/google":
                 return MagicMock(json=lambda: cls.org_payload)
@@ -95,14 +95,14 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher = patch('requests.get', side_effect=get_side_effect)
         cls.mock_get = cls.get_patcher.start()
 
-    def test_public_repos(self):
+    def test_public_repos(self) -> None:
         """ Test for the public_repos method. """
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(), self.expected_repos)
         self.assertEqual(client.public_repos("XLICENSE"), [])
         self.mock_get.assert_called()
 
-    def test_public_repos_with_license(self):
+    def test_public_repos_with_license(self) -> None:
         """ Test the public_repos method with license filtering. """
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(), self.expected_repos)
@@ -111,6 +111,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         self.mock_get.assert_called()
 
     @classmethod
-    def tearDownClass(cls):
+    def tearDownClass(cls) -> None:
         """ Tears down class-wide mocks after all tests in this class run. """
         cls.get_patcher.stop()
