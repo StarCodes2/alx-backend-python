@@ -61,5 +61,5 @@ class TestGithubOrgClient(unittest.TestCase):
             payload_list = [pay['name'] for pay in payload]
             self.assertEqual(test_obj.public_repos(), payload_list)
 
-            self.assertEqual(test_obj._public_repos_url, url)
+            repos_mock.assert_called_once()
             mock_get.assert_called_once()
