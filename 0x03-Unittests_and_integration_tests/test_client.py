@@ -3,10 +3,11 @@
     Using Mock, Parameterize and patch to test functions, methods and classes.
 """
 import unittest
-from unittest.mock import Mock, PropertyMock, patch
+from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from client import GithubOrgClient
-from parameterized import parameterized
-from typing import Any, Dict, Mapping, Sequence
+from parameterized import parameterized, parameterized_class
+from fixtures import TEST_PAYLOAD
+from typing import Dict
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -74,3 +75,42 @@ class TestGithubOrgClient(unittest.TestCase):
         """ Tests the has_license method. """
         test_bool = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(test_bool, expected)
+
+
+@parameterized_class(
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
+    TEST_PAYLOAD
+)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """ """
+    @classmethod
+    def setUpClass(cls):
+        """Set up class-wide mocks before any test in this class runs."""
+        def get_side_effect(url):
+            """ Side effect function for requests.get().json() """
+            if url == "https://api.github.com/orgs/google":
+                return MagicMock(json=lambda: cls.org_payload)
+            return MagicMock(json=lambda: cls.repos_payload)
+
+        cls.get_patcher = patch('requests.get', side_effect=get_side_effect)
+        cls.mock_get = cls.get_patcher.start()
+
+    def test_public_repos(self):
+        """ Test for the public_repos method. """
+        client = GithubOrgClient("google")
+        self.assertEqual(client.public_repos(), self.expected_repos)
+        self.assertEqual(client.public_repos("XLICENSE"), [])
+        self.mock_get.assert_called()
+
+    def test_public_repos_with_license(self):
+        """ Test the public_repos method with license filtering. """
+        client = GithubOrgClient("google")
+        self.assertEqual(client.public_repos(), self.expected_repos)
+        self.assertEqual(client.public_repos("XLICENSE"), [])
+        self.assertEqual(client.public_repos("apache-2.0"), self.apache2_repos)
+        self.mock_get.assert_called()
+
+    @classmethod
+    def tearDownClass(cls):
+        """ Tears down class-wide mocks after all tests in this class run. """
+        cls.get_patcher.stop()
