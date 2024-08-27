@@ -45,8 +45,8 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(test_obj._public_repos_url, payload["repos_url"])
 
     @parameterized.expand([
-        ("google", [{"name": "Search Repo"}]),
-        ("abc", [{"name": "abc Repo"}]),
+        ("google", [{"name": "Search Repo"}, {"name": "Drive Repo"}]),
+        ("abc", [{"name": "abc Repo"}, {"name": "Letters Repo"}]),
     ])
     @patch('client.get_json')
     def test_public_repos(self, org: str, payload: Dict,
